@@ -2,7 +2,7 @@
 
 namespace StudentPortal.Controllers
 {
-    public class StudentController1 : Controller
+    public class StudentController : Controller
     {
         [HttpGet]
         public IActionResult Add()
