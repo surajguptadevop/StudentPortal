@@ -9,5 +9,9 @@ namespace StudentPortal.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Add
+
     }
 }
