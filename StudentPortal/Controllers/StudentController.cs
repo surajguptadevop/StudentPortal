@@ -4,9 +4,9 @@ using StudentPortal.Models;
 using StudentPortal.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace StudentPortal.Controllers
 {
+    [Route("Students")]
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext dbContext;
@@ -16,13 +16,13 @@ namespace StudentPortal.Controllers
             this.dbContext = dbContext;
         }
 
-        [HttpGet]
+        [HttpGet("Add")]
         public IActionResult Add()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<IActionResult> Add(AddStudentViewModel viewModel)
         {
             var student = new Student
@@ -37,17 +37,17 @@ namespace StudentPortal.Controllers
             await dbContext.Students.AddAsync(student);
             await dbContext.SaveChangesAsync();
 
-            return RedirectToAction("Add"); // Or RedirectToAction("Index") if you have a list view
+            return RedirectToAction("Add");
         }
 
-        [HttpGet]
+        [HttpGet("List")]
         public async Task<IActionResult> List()
         {
             var students = await dbContext.Students.ToListAsync();
             return View(students);
         }
 
-        [HttpGet]
+        [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var student = await dbContext.Students.FindAsync(id);
@@ -67,7 +67,7 @@ namespace StudentPortal.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
+        [HttpPost("Edit")]
         public async Task<IActionResult> Edit(UpdateStudentViewModel viewModel)
         {
             var student = await dbContext.Students.FindAsync(viewModel.Id);
@@ -85,7 +85,7 @@ namespace StudentPortal.Controllers
             return RedirectToAction("List");
         }
 
-        [HttpGet]
+        [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var student = await dbContext.Students.FindAsync(id);
@@ -96,8 +96,7 @@ namespace StudentPortal.Controllers
             return View(student);
         }
 
-        [HttpPost]
-        [ActionName("Delete")]
+        [HttpPost("Delete/{id}")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var student = await dbContext.Students.FindAsync(id);
@@ -110,6 +109,5 @@ namespace StudentPortal.Controllers
 
             return RedirectToAction("List");
         }
-
     }
 }
