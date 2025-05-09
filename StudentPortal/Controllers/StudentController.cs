@@ -67,10 +67,13 @@ namespace StudentPortal.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("Edit")]
-        public async Task<IActionResult> Edit(UpdateStudentViewModel viewModel)
+        [HttpPost("Edit/{id}")]
+        public async Task<IActionResult> Edit(Guid id, UpdateStudentViewModel viewModel)
         {
-            var student = await dbContext.Students.FindAsync(viewModel.Id);
+            if (id != viewModel.Id)
+                return BadRequest();
+
+            var student = await dbContext.Students.FindAsync(id);
 
             if (student == null)
                 return NotFound();
@@ -84,6 +87,7 @@ namespace StudentPortal.Controllers
 
             return RedirectToAction("List");
         }
+
 
         [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
