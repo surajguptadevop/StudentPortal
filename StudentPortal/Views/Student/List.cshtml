@@ -1,15 +1,10 @@
 ﻿@model List<StudentPortal.Models.Entities.Student>
 
-@{
-    ViewData["Title"] = "Student List";
-}
+<h2>Student List</h2>
 
-<h1>Student</h1>
-
-<table class="table table-bordered">
+<table id="studentsTable" class="display">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
@@ -21,16 +16,23 @@
         @foreach (var student in Model)
         {
             <tr>
-                <td>@student.Id</td>
                 <td>@student.Name</td>
                 <td>@student.Email</td>
                 <td>@student.Phone</td>
-                <td>@(student.Subscribed ? "Yes" : "No")</td>
+                <td>@student.Subscribed</td>
                 <td>
-                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@student.Id" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-controller="Student" asp-action="Delete" asp-route-id="@student.Id" class="btn btn-danger btn-sm">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#studentsTable').DataTable();
+        });
+    </script>
+}
